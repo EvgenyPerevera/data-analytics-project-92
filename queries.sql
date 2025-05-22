@@ -17,3 +17,39 @@ JOIN
 GROUP by 1
 ORDER by 3 DESC
 LIMIT 10;
+
+
+--
+SELECT
+    CONCAT(e.first_name, ' ', e.last_name) AS seller,
+    FLOOR(AVG(p.price * s.quantity)) AS average_income
+FROM sales s
+JOIN employees e 
+   ON s.sales_person_id = e.employee_id
+JOIN products p 
+   ON s.product_id = p.product_id
+GROUP BY 1
+HAVING AVG(p.price * s.quantity) < (
+    SELECT AVG(p.price * s.quantity)
+    FROM sales s
+    JOIN products p ON s.product_id = p.product_id)
+ORDER BY 2 ASC;
+
+
+--
+SELECT
+    CONCAT(e.first_name, ' ', e.last_name) AS seller,
+    LOWER(TRIM(TO_CHAR(s.sale_date, 'Day'))) AS day_of_week,
+    FLOOR(SUM(p.price * s.quantity)) AS income
+FROM sales s
+JOIN employees e 
+   ON s.sales_person_id = e.employee_id
+JOIN products p 
+   ON s.product_id = p.product_id
+GROUP BY 1, 2, EXTRACT(DOW FROM s.sale_date)
+ORDER BY 
+   CASE 
+        WHEN EXTRACT(DOW FROM s.sale_date) = 0 THEN 7   
+        ELSE EXTRACT(DOW FROM s.sale_date)            
+   END, 
+    1;

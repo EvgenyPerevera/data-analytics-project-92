@@ -3,7 +3,6 @@ SELECT
     COUNT(*) AS customers_count  
 FROM customers;
 
-
 --
 SELECT
     CONCAT(e.first_name, ' ', e.last_name) AS seller,
@@ -17,7 +16,6 @@ JOIN
 GROUP by 1
 ORDER by 3 DESC
 LIMIT 10;
-
 
 --
 SELECT
@@ -34,7 +32,6 @@ HAVING AVG(p.price * s.quantity) < (
     FROM sales s
     JOIN products p ON s.product_id = p.product_id)
 ORDER BY 2 ASC;
-
 
 --
 SELECT
@@ -53,10 +50,6 @@ ORDER BY
         ELSE EXTRACT(DOW FROM s.sale_date)            
    END, 
     1;
-
-
-
-
 
 --
 SELECT

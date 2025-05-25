@@ -69,3 +69,25 @@ SELECT
 FROM customers
 GROUP BY 1
 ORDER by 1;
+
+--
+SELECT
+  TO_CHAR(s.sale_date, 'YYYY-MM') AS selling_month,
+  COUNT(DISTINCT s.customer_id) AS total_customers,
+  SUM(s.quantity * p.price) AS income
+FROM sales s
+JOIN products p ON s.product_id = p.product_id
+GROUP BY 1
+ORDER BY 1;
+
+--
+SELECT DISTINCT ON (c.customer_id)
+  c.first_name || ' ' || c.last_name AS customer,
+  s.sale_date,
+  e.first_name || ' ' || e.last_name AS seller
+FROM sales s
+JOIN customers c ON s.customer_id = c.customer_id
+JOIN products p ON s.product_id = p.product_id
+JOIN employees e ON s.sales_person_id = e.employee_id
+WHERE p.price = 0
+ORDER BY c.customer_id, 2;

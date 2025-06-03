@@ -80,11 +80,11 @@ INNER JOIN products AS p
     --присоединяем таблицу products, чтобы узнать цену товара
     ON s.product_id = p.product_id
 --группируем по продавцу и дню недели 
-GROUP BY 1, 2, EXTRACT(dow FROM s.sale_date)
+GROUP BY 1, 2, EXTRACT(DOW FROM s.sale_date)
 ORDER BY
     CASE
-        WHEN EXTRACT(dow FROM s.sale_date) = 0 THEN 7
-        ELSE EXTRACT(dow FROM s.sale_date)
+        WHEN EXTRACT(DOW FROM s.sale_date) = 0 THEN 7
+        ELSE EXTRACT(DOW FROM s.sale_date)
     END,
     1; --сортируем по порядковому номеру дня недели и продавцу
 

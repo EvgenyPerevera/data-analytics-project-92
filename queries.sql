@@ -9,8 +9,8 @@ SELECT
     COUNT(s.sales_id) AS operations,
     FLOOR(SUM(p.price * s.quantity)) AS income
 FROM public.sales AS s
-JOIN public.employees AS e ON s.sales_person_id = e.employee_id
-JOIN public.products AS p ON s.product_id = p.product_id
+INNER JOIN public.employees AS e ON s.sales_person_id = e.employee_id
+INNER JOIN public.products AS p ON s.product_id = p.product_id
 GROUP BY seller
 ORDER BY income DESC
 LIMIT 10;
@@ -20,15 +20,15 @@ SELECT
     CONCAT(e.first_name, ' ', e.last_name) AS seller,
     ROUND(AVG(p.price * s.quantity)) AS average_income
 FROM public.sales AS s
-JOIN public.employees AS e ON s.sales_person_id = e.employee_id
-JOIN public.products AS p ON s.product_id = p.product_id
+INNER JOIN public.employees AS e ON s.sales_person_id = e.employee_id
+INNER JOIN public.products AS p ON s.product_id = p.product_id
 GROUP BY seller
 HAVING
     AVG(p.price * s.quantity) < (
         SELECT
             AVG(p2.price * s2.quantity)
         FROM public.sales AS s2
-        JOIN public.products AS p2 ON s2.product_id = p2.product_id
+       INNER JOIN public.products AS p2 ON s2.product_id = p2.product_id
     )
 ORDER BY average_income;
 
@@ -38,8 +38,8 @@ SELECT
     TO_CHAR(s.sale_date, 'Day') AS day_of_week,
     FLOOR(SUM(p.price * s.quantity)) AS income
 FROM public.sales AS s
-JOIN public.employees AS e ON s.sales_person_id = e.employee_id
-JOIN public.products AS p ON s.product_id = p.product_id
+INNER JOIN public.employees AS e ON s.sales_person_id = e.employee_id
+INNER JOIN public.products AS p ON s.product_id = p.product_id
 GROUP BY
     seller,
     day_of_week,
@@ -69,7 +69,7 @@ SELECT
     COUNT(DISTINCT s.customer_id) AS total_customers,
     FLOOR(SUM(s.quantity * p.price)) AS income
 FROM public.sales AS s
-JOIN public.products AS p ON s.product_id = p.product_id
+INNER JOIN public.products AS p ON s.product_id = p.product_id
 GROUP BY selling_month
 ORDER BY selling_month;
 
@@ -79,8 +79,8 @@ SELECT DISTINCT ON (c.customer_id)
     s.sale_date,
     e.first_name || ' ' || e.last_name AS seller
 FROM public.sales AS s
-JOIN public.customers AS c ON s.customer_id = c.customer_id
-JOIN public.products AS p ON s.product_id = p.product_id
-JOIN public.employees AS e ON s.sales_person_id = e.employee_id
+INNER JOIN public.customers AS c ON s.customer_id = c.customer_id
+INNER JOIN public.products AS p ON s.product_id = p.product_id
+INNER JOIN public.employees AS e ON s.sales_person_id = e.employee_id
 WHERE p.price = 0
 ORDER BY c.customer_id, s.sale_date;

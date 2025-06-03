@@ -4,16 +4,28 @@ FROM customers;
 
 
 SELECT
-    CONCAT(e.first_name, ' ', e.last_name) AS seller, -- берем имя и фамилию из таблицы employees, объединяем в одну строку с пробелом с помощью CONCAT, присваиваем колонке псевдоним seller
-    COUNT(s.sales_id) AS operations, --считаем количество продаж, связанных с продавцом, присваиваем колонке псевдоним operations
-    FLOOR(SUM(p.price * s.quantity)) AS income --считаем суммарную выручку (цена товара * количество), округляем до целых чисел (в меньшую сторону), присваиваем колонке псевдоним income
-FROM sales s
-JOIN
-    employees e ON s.sales_person_id = e.employee_id --присоединяем таблицу employees, чтобы узнать, кто сделал продажу
-JOIN
-    products p ON s.product_id = p.product_id --присоединяем таблицу products, чтобы узнать цену товара
-GROUP by 1 --группируем по продавцу
-ORDER by 3 DESC --сортируем по суммарной выручке (от большей к меньшей)
+    CONCAT(e.first_name, ' ', e.last_name) AS seller, 
+    /* берем имя и фамилию из таблицы employees, объединяем 
+    в одну строку с пробелом с помощью CONCAT, 
+    присваиваем колонке псевдоним seller */
+    COUNT(s.sales_id) AS operations, /*считаем 
+    количество продаж, связанных с продавцом, 
+    присваиваем колонке псевдоним operations */
+    FLOOR(SUM(p.price * s.quantity)) AS income /*считаем 
+    суммарную выручку (цена товара * количество), 
+    округляем до целых чисел (в меньшую сторону), 
+    присваиваем колонке псевдоним income*/
+FROM sales AS s
+INNER JOIN
+    employees AS e
+    --присоединяем таблицу employees, чтобы узнать, кто сделал продажу
+    ON s.sales_person_id = e.employee_id
+INNER JOIN
+    products AS p
+    --присоединяем таблицу products, чтобы узнать цену товара
+    ON s.product_id = p.product_id
+GROUP BY 1 --группируем по продавцу
+ORDER BY 3 DESC --сортируем по суммарной выручке (от большей к меньшей)
 LIMIT 10; --выводим первые 10 записей
 
 

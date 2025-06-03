@@ -17,7 +17,7 @@ LIMIT 10;
 -- Продавцы с доходом ниже среднего по сделке
 SELECT
     CONCAT(e.first_name, ' ', e.last_name) AS seller,
-    ROUND(AVG(p.price * s.quantity)) AS average_income
+    FLOOR(AVG(p.price * s.quantity)) AS average_income
 FROM public.sales AS s
 INNER JOIN public.employees AS e ON s.sales_person_id = e.employee_id
 INNER JOIN public.products AS p ON s.product_id = p.product_id

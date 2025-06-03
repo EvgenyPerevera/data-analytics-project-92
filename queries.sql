@@ -23,13 +23,12 @@ FROM public.sales AS s
 JOIN public.employees AS e ON s.sales_person_id = e.employee_id
 JOIN public.products AS p ON s.product_id = p.product_id
 GROUP BY seller
-HAVING
-    AVG(p.price * s.quantity) < (
-        SELECT
-            AVG(p2.price * s2.quantity)
-        FROM public.sales AS s2
-        JOIN public.products AS p2 ON s2.product_id = p2.product_id
-    )
+HAVING AVG(p.price * s.quantity) < (
+    SELECT
+        AVG(p2.price * s2.quantity)
+    FROM public.sales AS s2
+    JOIN public.products AS p2 ON s2.product_id = p2.product_id
+)
 ORDER BY average_income;
 
 -- Выручка продавцов по дням недели
@@ -75,12 +74,14 @@ ORDER BY selling_month;
 
 -- Первая акция с бесплатным товаром для каждого клиента
 SELECT DISTINCT ON (c.customer_id)
-    c.first_name || ' ' || c.last_name AS customer,
+    CONCAT(c.first_name, ' ', c.last_name) AS customer,
     s.sale_date,
-    e.first_name || ' ' || e.last_name AS seller
+    CONCAT(e.first_name, ' ', e.last_name) AS seller
 FROM public.sales AS s
 JOIN public.customers AS c ON s.customer_id = c.customer_id
 JOIN public.products AS p ON s.product_id = p.product_id
 JOIN public.employees AS e ON s.sales_person_id = e.employee_id
 WHERE p.price = 0
-ORDER BY c.customer_id, s.sale_date;
+ORDER BY
+    c.customer_id,
+    s.sale_date;

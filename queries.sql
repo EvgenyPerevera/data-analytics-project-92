@@ -1,6 +1,5 @@
 -- Общее количество покупателей
-SELECT
-    COUNT(*) AS customers_count
+SELECT COUNT(*) AS customers_count
 FROM public.customers;
 
 -- Топ-10 продавцов по выручке
@@ -25,8 +24,7 @@ INNER JOIN public.products AS p ON s.product_id = p.product_id
 GROUP BY seller
 HAVING
     AVG(p.price * s.quantity) < (
-        SELECT
-            AVG(p2.price * s2.quantity)
+        SELECT AVG(p2.price * s2.quantity)
         FROM public.sales AS s2
         INNER JOIN public.products AS p2 ON s2.product_id = p2.product_id
     )

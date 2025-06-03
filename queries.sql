@@ -28,7 +28,7 @@ HAVING
         SELECT
             AVG(p2.price * s2.quantity)
         FROM public.sales AS s2
-       INNER JOIN public.products AS p2 ON s2.product_id = p2.product_id
+        INNER JOIN public.products AS p2 ON s2.product_id = p2.product_id
     )
 ORDER BY average_income;
 

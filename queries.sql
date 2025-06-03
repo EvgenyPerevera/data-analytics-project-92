@@ -3,6 +3,7 @@ SELECT
 FROM customers;
 
 
+
 SELECT
     CONCAT(e.first_name, ' ', e.last_name) AS seller,
     /* берем имя и фамилию из таблицы employees, объединяем
@@ -27,6 +28,7 @@ INNER JOIN
 GROUP BY 1 --группируем по продавцу
 ORDER BY 3 DESC --сортируем по суммарной выручке (от большей к меньшей)
 LIMIT 10; --выводим первые 10 записей
+
 
 
 SELECT
@@ -103,6 +105,7 @@ GROUP BY 1 --группируем по возрастным группам
 ORDER BY 1; --сортируем по возрастным группам
 
 
+
 SELECT
     TO_CHAR(s.sale_date, 'YYYY-MM') AS selling_month, /*преобразуем
         дату продажи в формат "год-месяц",
@@ -119,6 +122,8 @@ INNER JOIN products AS p
     ON s.product_id = p.product_id
 GROUP BY 1 --группируем по дате (по возрастанию)
 ORDER BY 1; --сортируем по дате (по возрастанию)
+
+
 
 SELECT DISTINCT ON (c.customer_id) /* выводим 
     одну строку для каждого уникального покупателя 

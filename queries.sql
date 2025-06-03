@@ -4,16 +4,16 @@ FROM customers;
 
 
 SELECT
-    CONCAT(e.first_name, ' ', e.last_name) AS seller, 
-    /* берем имя и фамилию из таблицы employees, объединяем 
-    в одну строку с пробелом с помощью CONCAT, 
+    CONCAT(e.first_name, ' ', e.last_name) AS seller,
+    /* берем имя и фамилию из таблицы employees, объединяем
+    в одну строку с пробелом с помощью CONCAT,
     присваиваем колонке псевдоним seller */
-    COUNT(s.sales_id) AS operations, /*считаем 
-    количество продаж, связанных с продавцом, 
+    COUNT(s.sales_id) AS operations, /*считаем
+    количество продаж, связанных с продавцом,
     присваиваем колонке псевдоним operations */
-    FLOOR(SUM(p.price * s.quantity)) AS income /*считаем 
-    суммарную выручку (цена товара * количество), 
-    округляем до целых чисел (в меньшую сторону), 
+    FLOOR(SUM(p.price * s.quantity)) AS income /*считаем
+    суммарную выручку (цена товара * количество),
+    округляем до целых чисел (в меньшую сторону),
     присваиваем колонке псевдоним income*/
 FROM sales AS s
 INNER JOIN

@@ -73,8 +73,8 @@ ORDER BY selling_month;
 
 -- Первая акция с бесплатным товаром для каждого клиента
 SELECT DISTINCT ON (c.customer_id)
-    c.first_name || ' ' || c.last_name AS customer,
     s.sale_date,
+    c.first_name || ' ' || c.last_name AS customer,
     e.first_name || ' ' || e.last_name AS seller
 FROM public.sales AS s
 INNER JOIN public.customers AS c ON s.customer_id = c.customer_id

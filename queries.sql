@@ -1,21 +1,32 @@
 -- Общее количество покупателей
-SELECT COUNT(*) AS customers_count
+SELECT COUNT(*) AS customers_count -- считаем общее количнство покупателей 
 FROM public.customers;
 
 -- Топ-10 продавцов по выручке
 SELECT
+    /* берем имя и фамилию из таблицы employees, 
+    объединяем в одну строку с пробелом */
     CONCAT(e.first_name, ' ', e.last_name) AS seller,
+    -- считаем количество продаж продавцов
     COUNT(s.sales_id) AS operations,
+    /* считаем суммарную выручку,
+    округляем до целых чисел в меньшую сторону */
     FLOOR(SUM(p.price * s.quantity)) AS income
 FROM public.sales AS s
+    -- присоединяем таблицы employees и products
 INNER JOIN public.employees AS e ON s.sales_person_id = e.employee_id
 INNER JOIN public.products AS p ON s.product_id = p.product_id
+    /* группируем по продавцу,
+    сортируем по суммарной выручке от большей к меньшей,
+    выводим первые 10 записей*/
 GROUP BY seller
 ORDER BY income DESC
 LIMIT 10;
 
 -- Продавцы с доходом ниже среднего по сделке
 SELECT
+    /* берем имя и фамилию из таблицы employees,
+    объединяем в одну строку с пробелом */
     CONCAT(e.first_name, ' ', e.last_name) AS seller,
     FLOOR(AVG(p.price * s.quantity)) AS average_income
 FROM public.sales AS s

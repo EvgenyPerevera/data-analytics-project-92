@@ -70,12 +70,9 @@ INNER JOIN public.products AS p ON s.product_id = p.product_id
 GROUP BY
     seller,
     day_of_week,
-    EXTRACT(DOW FROM s.sale_date)
+    EXTRACT(ISODOW FROM s.sale_date)
 ORDER BY
-    CASE
-        WHEN EXTRACT(DOW FROM s.sale_date) = 0 THEN 7
-        ELSE EXTRACT(DOW FROM s.sale_date)
-    END,
+    EXTRACT(ISODOW FROM s.sale_date),
     seller;
 
 -- ВОЗРАСТНЫЕ КАТЕГОРИИ ПОКУПАТЕЛЕЙ 
